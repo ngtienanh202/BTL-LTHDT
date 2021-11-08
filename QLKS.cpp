@@ -1,125 +1,220 @@
 #include <iostream>
 #include <conio.h>
+#include <vector>
 using namespace std;
 
-struct Ngay{
-    int ngay, thang, nam;
-};
-
-class ConNguoi{
+class NhanVien{
     protected:
         string HoTen;
-        Ngay NgaySinh;
+        int SoNgayLam;
+        long PhuCap;
+        int NamVaoLam;
     public:
+    	NhanVien();
+        ~NhanVien();
         virtual void Nhap();
         virtual void Xuat();
-        virtual long ThanhTien() = 0;
+        virtual long TinhLuong() = 0;
 };
 
-class NhanVien:public ConNguoi{
-    private:
-        float LuongTheoNgay = 100000;
-        int SoNgayLam;
-        float TienThuong;
+NhanVien::NhanVien(){
+	HoTen = "";
+	SoNgayLam = 0;
+	PhuCap = 100000;
+	NamVaoLam = 0;
+}
+
+NhanVien::~NhanVien(){}
+
+class LeTan:public NhanVien{
+    protected:
+    	long LuongCoBan = 450000;
     public:
         void Nhap();
         void Xuat();
-        long ThanhTien();
+        long TinhLuong();
+        
 };
 
-class KhachHang:public ConNguoi{
-    private:
-        float NgayO;
-        float GiaTien;
+class BaoVe:public NhanVien{
+    protected:
+    	long LuongCoBan = 400000;
     public:
         void Nhap();
         void Xuat();
-        long ThanhTien();
+        long TinhLuong();
 };
 
-void ConNguoi::Nhap(){
+class PhucVuPhong:public NhanVien{
+    protected:
+    	long LuongCoBan = 500000;
+    public:
+        void Nhap();
+        void Xuat();
+        long TinhLuong();
+};
+
+class DauBep:public NhanVien{
+    protected:
+    	long LuongCoBan = 600000;
+    public:
+        void Nhap();
+        void Xuat();
+        long TinhLuong();
+};
+
+
+
+void NhanVien::Nhap(){
     cout << "Nhap ho va ten: ";
     cin.ignore();
     getline(cin, HoTen);
-    cout << "Nhap ngay thang nam sinh: ";
-    cin >> NgaySinh.ngay;
-    cin >> NgaySinh.thang;
-    cin >> NgaySinh.nam;
-}
-
-long NhanVien::ThanhTien(){
-    return LuongTheoNgay * SoNgayLam + TienThuong;
-}
-
-void ConNguoi::Xuat(){
-    cout << "Ho va ten: " << HoTen << endl;
-    cout << "Ngay sinh: " << NgaySinh.ngay << "/" << NgaySinh.thang << "/" << NgaySinh.nam << endl;
-}
-
-void NhanVien::Nhap(){
-    ConNguoi::Nhap();
-    cout << "Muc luong theo ngay la 100000 VND" << endl;
+    cout << "Tien phu cap mac dinh la 100000" << endl;
+    cout << "Nhap nam vao lam: ";
+    cin >> NamVaoLam;
     cout << "Nhap so ngay lam: ";
     cin >> SoNgayLam;
-    cout << "Nhap tien thuong: ";
-    cin >> TienThuong;
 }
 
 void NhanVien::Xuat(){
-    ConNguoi::Xuat();
+    cout << "Ho va ten: " << HoTen << endl;
+    cout << "Nam vao lam: " << NamVaoLam << endl;
     cout << "So ngay lam: " << SoNgayLam << endl;
-    cout << "Tien luong: " << this->ThanhTien() << endl;
+    cout << "Tien luong: " << this->TinhLuong() << endl;
 }
 
-
-void KhachHang::Nhap(){
-    ConNguoi::Nhap();
-    cout << "So ngay o lai khach san: ";
-    cin >> NgayO;
-    cout << "Gia tien 1 ngay o: ";
-    cin >> GiaTien;
+long LeTan::TinhLuong(){
+	long Luong = 0;
+    Luong = LuongCoBan * SoNgayLam + (PhuCap * (2021-NamVaoLam));
+    return Luong;
 }
 
-void KhachHang::Xuat(){
-    ConNguoi::Xuat();
-    cout << "Thanh tien sau khi o lai khach san " << NgayO << " ngay la: " << ThanhTien();
+long BaoVe::TinhLuong(){
+    long Luong = 0;
+    Luong = LuongCoBan * SoNgayLam + (PhuCap * (2021-NamVaoLam));
+    return Luong;
 }
 
-long KhachHang::ThanhTien(){
-    return NgayO * GiaTien;
+long PhucVuPhong::TinhLuong(){
+    long Luong = 0;
+    Luong = LuongCoBan * SoNgayLam + (PhuCap * (2021-NamVaoLam));
+    return Luong;
+}
+
+long DauBep::TinhLuong(){
+    long Luong = 0;
+    Luong = LuongCoBan * SoNgayLam + (PhuCap * (2021-NamVaoLam));
+    return Luong;
+}
+
+void LeTan::Nhap(){
+	NhanVien::Nhap();
+}
+
+void LeTan::Xuat(){
+	NhanVien::Xuat();
+}
+
+void BaoVe::Nhap(){
+	NhanVien::Nhap();
+}
+
+void BaoVe::Xuat(){
+	NhanVien::Xuat();
+}
+
+void PhucVuPhong::Nhap(){
+	NhanVien::Nhap();
+}
+
+void PhucVuPhong::Xuat(){
+	NhanVien::Xuat();
+}
+
+void DauBep::Nhap(){
+	NhanVien::Nhap();
+}
+
+void DauBep::Xuat(){
+	NhanVien::Xuat();
+}
+
+class QuanLyNhanVien{
+	private:
+		vector<NhanVien*> dsNhanVien;
+	public:
+		void NhapDS();
+		void XuatDS();
+};
+
+void QuanLyNhanVien::NhapDS(){
+	NhanVien *nv;
+	int k;
+	do{
+        system("cls");
+        cout << "1. Le tan." << endl;
+        cout << "2. Bao ve." << endl;
+        cout << "3. Phuc vu phong." << endl;
+        cout << "4. Bao ve." << endl;
+        cout << "0. Quay lai menu chinh." << endl;
+        cout << "Chon chuc nang: ";
+        cin >> k;
+        switch(k){
+        	case 1:
+                nv = new LeTan;
+                nv->Nhap();
+                dsNhanVien.push_back(nv); 
+                break;
+            case 2:
+                nv = new BaoVe;
+                nv->Nhap();
+                dsNhanVien.push_back(nv);            
+                break;
+            case 3:
+                nv = new PhucVuPhong;
+                nv->Nhap();
+				dsNhanVien.push_back(nv);
+                break;
+            case 4:
+                nv = new DauBep;
+                nv->Nhap();
+				dsNhanVien.push_back(nv);
+                break;
+            case 0:
+            	break;
+		}
+	} while (k != 0);
+}
+
+void QuanLyNhanVien::XuatDS(){
+	for (int i = 0; i < dsNhanVien.size(); i++) {
+		dsNhanVien[i]->Xuat();
+		cout << "___________________________" << endl;
+	}
 }
 
 int main(){
-    ConNguoi *cn;
-    int k;
-    while(1){
+	int k;
+    QuanLyNhanVien qlnv;
+	do{
         system("cls");
-        cout << "\n1. Nhan vien.";
-        cout << "\n2. KhachHang.";
-        cout << "\n0. Tro ve Menu chinh.";
-        cout << "\nChon chuc nang: ";
+        cout << "* * * * * QUAN LY NHAN VIEN KHACH SAN * * * * *" << endl;
+        cout << "1. Nhap nhan vien" << endl;
+        cout << "2. Xuat nhan vien." << endl;
+        cout << "0. Thoat chuong trinh." << endl;
+        cout << "Chon chuc nang: ";
         cin >> k;
         switch(k){
             case 1:
-                cn = new NhanVien;
-                cn->Nhap();
-                cn->Xuat();
-                system("pause");
+                qlnv.NhapDS();
                 break;
             case 2:
-                cn = new KhachHang;
-                cn->Nhap();
-                cn->Xuat();
-                system("pause");
-                break;
-            case 0:
-            return 0;
-            default:
-                break;
+            	qlnv.XuatDS();
+    			break;
+    		default:
+				break;
         }
-    }
-    
+    } while(k != 0);
 }
-
 
 
