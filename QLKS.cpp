@@ -15,6 +15,9 @@ class NhanVien{
         virtual void Nhap();
         virtual void Xuat();
         virtual long TinhLuong() = 0;
+	virtual long getLuong(){
+		return TinhLuonh();
+	}
 };
 
 NhanVien::NhanVien(){
@@ -80,7 +83,7 @@ void NhanVien::Xuat(){
     cout << "Ho va ten: " << HoTen << endl;
     cout << "Nam vao lam: " << NamVaoLam << endl;
     cout << "So ngay lam: " << SoNgayLam << endl;
-    cout << "Tien luong: " << this->TinhLuong() << endl;
+    cout << "Tien luong: " << TinhLuong() << endl;
 }
 
 long LeTan::TinhLuong(){
@@ -145,6 +148,8 @@ class QuanLyNhanVien{
 	public:
 		void NhapDS();
 		void XuatDS();
+		void SapXep();
+        	void MaxLong();
 };
 
 void QuanLyNhanVien::NhapDS(){
@@ -193,6 +198,34 @@ void QuanLyNhanVien::XuatDS(){
 	}
 }
 
+// Sap Xep theo Luong tang dan
+void QuanLyNhanVien::SapXep(){
+    for(int i=0;i<dsNhanVien.size();i++){
+        for(int j=i+1;j<dsNhanVien.size();j++){
+            if(dsNhanVien.at(i)->getLuong()>dsNhanVien.at(j)->getLuong()){
+                NhanVien *t=dsNhanVien.at(i);
+                dsNhanVien.at(i)=dsNhanVien.at(j);
+                dsNhanVien.at(j)=t;
+            }
+        }
+    }
+    XuatDS();
+}
+
+
+// Tìm Lương Cao nhất
+void QuanLyNhanVien::MaxLong(){
+    NhanVien *max=dsNhanVien.at(0);
+    for(int i=1;i<dsNhanVien.size();i++){
+        if(dsNhanVien.at(i)->getLuong() > max->getLuong())
+            max = dsNhanVien.at(i);
+    }
+    cout<<endl<<"Nhan Vien co Luong cao nhat: "<<endl;
+    max->Xuat();
+}
+
+
+
 int main(){
 	int k;
     QuanLyNhanVien qlnv;
@@ -201,6 +234,8 @@ int main(){
         cout << "* * * * * QUAN LY NHAN VIEN KHACH SAN * * * * *" << endl;
         cout << "1. Nhap nhan vien" << endl;
         cout << "2. Xuat nhan vien." << endl;
+	cout << "3. Sap Xep Luong tang dan."<< endl;
+        cout <<" 4. Nhan vien co Luong cao nhat."<<endl;
         cout << "0. Thoat chuong trinh." << endl;
         cout << "Chon chuc nang: ";
         cin >> k;
@@ -211,6 +246,14 @@ int main(){
             case 2:
             	qlnv.XuatDS();
     			break;
+	    case 3:
+                qlnv.SapXep();
+                system("pause");
+                break;
+            case 4:
+                qlnv.MaxLong();
+                system("pause");
+                break;
     		default:
 				break;
         }
