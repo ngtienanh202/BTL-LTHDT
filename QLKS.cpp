@@ -8,6 +8,40 @@
 #include <vector>
 using namespace std;
 
+void SetWindowSize(SHORT width, SHORT height)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SMALL_RECT WindowSize;
+    WindowSize.Top = 0;
+    WindowSize.Left = 0;
+    WindowSize.Right = width;
+    WindowSize.Bottom = height;
+ 
+    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
+}
+
+void SetScreenBufferSize(SHORT width, SHORT height)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    COORD NewSize;
+    NewSize.X = width;
+    NewSize.Y = height;
+
+    SetConsoleScreenBufferSize(hStdout, NewSize);
+}
+
+void ShowScrollbar(BOOL Show)
+{
+    HWND hWnd = GetConsoleWindow();
+    ShowScrollBar(hWnd, SB_BOTH, Show);
+}
+
+BOOL WINAPI SetConsoleTitle(
+    _In_ LPCTSTR lpConsoleTitle
+);
+    
 class NhanVien{
     protected:
         string HoTen, QueQuan, MaNV;
@@ -31,6 +65,9 @@ class NhanVien{
         string getTen(){
             return HoTen;
         }
+        string getQueQuan(){
+        	return QueQuan;
+		}
         int getSoNgayLam(){
             return SoNgayLam;
         }
@@ -101,7 +138,7 @@ class DauBep:public NhanVien{
 
 
 void NhanVien::Nhap(){
-    cout << "Cong thuc tinh luong: Luong co ban * So ngay lam + (Phu cap * (2021-Nam vao lam)) + Tien thuong" << endl;
+    cout << "Cong thuc tinh luong: Luong co ban * So ngay lam + (Phu cap(200000 VND) * (2021-Nam vao lam)) + Tien thuong (VND)" << endl;
     cout << "Nhap ma nhan vien: ";
     fflush(stdin);
     getline(cin, MaNV);
@@ -120,7 +157,8 @@ void NhanVien::Nhap(){
 }
 
 void NhanVien::Xuat(){
-	cout << setw(12) << MaNV << setw(17) << this->getChucVu() << setw(20) << HoTen << setw(18) << QueQuan << setw(12) << NamVaoLam << setw(15) << SoNgayLam << setw(20) << TinhLuong() << endl;
+	cout << setw(12) << MaNV << setw(17) << this->getChucVu() << setw(20) << HoTen << setw(18);
+	cout << QueQuan << setw(12) << NamVaoLam << setw(15) << SoNgayLam << setw(20) << TinhLuong() << " VND" << endl;
     
 }
 
@@ -149,7 +187,7 @@ long DauBep::TinhLuong(){
 }
 
 void LeTan::Nhap(){
-	cout << "Luong co ban mot ngay la 450000." << endl;
+	cout << "Luong co ban mot ngay la 450000 VND." << endl;
 	NhanVien::Nhap();
 }
 
@@ -158,7 +196,7 @@ void LeTan::Xuat(){
 }
 
 void BaoVe::Nhap(){
-	cout << "Luong co ban mot ngay la 400000." << endl;
+	cout << "Luong co ban mot ngay la 400000 VND." << endl;
 	NhanVien::Nhap();
 }
 
@@ -167,7 +205,7 @@ void BaoVe::Xuat(){
 }
 
 void PhucVu::Nhap(){
-	cout << "Luong co ban mot ngay la 500000." << endl;
+	cout << "Luong co ban mot ngay la 500000 VND." << endl;
 	NhanVien::Nhap();
 }
 
@@ -176,7 +214,7 @@ void PhucVu::Xuat(){
 }
 
 void DauBep::Nhap(){
-	cout << "Luong co ban mot ngay la 600000." << endl;
+	cout << "Luong co ban mot ngay la 600000 VND." << endl;
 	NhanVien::Nhap();
 }
 
@@ -192,28 +230,31 @@ class QuanLyNhanVien{
         void doc_ChucVu(ifstream& filein);
 		void NhapDS();
 		void XuatDS();
+		void Xoa();
+		void XoaDS();
         void SapXep();
         void MaxLong();
         void TongLuong();
         void TimKiem_NV();
 };
+
 //Nhap danh sach nhan vien
 void QuanLyNhanVien::NhapDS(){  
 	NhanVien *nv;
 	int k;
 	do{
         system("cls");
-        cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-		cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(119) <<"||=====||=============================================||" << endl;       
-        cout << setw(119) <<"||  1  || Le tan                                      ||" << endl;
-        cout << setw(119) <<"||  2  || Bao ve                                      ||" << endl;
-        cout << setw(119) <<"||  3  || Phuc vu                               ||" << endl;
-        cout << setw(119) <<"||  4  || Dau bep                                     ||" << endl;
-        cout << setw(119) <<"||  0  || Quay lai menu chinh                         ||" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-        cout << setw(119) <<"Chon chuc vu muon them: ";
+        cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+		cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+		cout << setw(85) <<"||=====||=============================================||" << endl;       
+        cout << setw(85) <<"||  1  || Le tan                                      ||" << endl;
+        cout << setw(85) <<"||  2  || Bao ve                                      ||" << endl;
+        cout << setw(85) <<"||  3  || Phuc vu                                     ||" << endl;
+        cout << setw(85) <<"||  4  || Dau bep                                     ||" << endl;
+        cout << setw(85) <<"||  0  || Quay lai menu chinh                         ||" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+        cout << setw(85) <<"Chon chuc vu muon them: ";
         cin >> k;
         switch(k){
         	case 1:
@@ -261,30 +302,87 @@ void QuanLyNhanVien::SapXep(){
     int key, choose;
     do {
         system("cls");
-        cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-		cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(119) <<"||=====||=============================================||" << endl;       
-        cout << setw(119) <<"||  1  || Theo ten nhan vien                          ||" << endl;
-        cout << setw(119) <<"||  2  || Theo nam vao lam                            ||" << endl;
-        cout << setw(119) <<"||  3  || Theo luong                                  ||" << endl;
-        cout << setw(119) <<"||  0  || Quay lai                                    ||" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-        cout << setw(119) <<"Chon chuc nang : "; 
+        cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+		cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+		cout << setw(85) <<"||=====||=============================================||" << endl;
+		cout << setw(85) <<"||  1  || Theo ma nhan vien                           ||" << endl;       
+        cout << setw(85) <<"||  2  || Theo ten nhan vien                          ||" << endl;
+        cout << setw(85) <<"||  3  || Theo nam vao lam                            ||" << endl;
+        cout << setw(85) <<"||  4  || Theo luong                                  ||" << endl;
+        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+        cout << setw(85) <<"Chon chuc nang : "; 
 		cin >> key;
         switch (key){
         case 1:
             do{
                 system("cls");
-                cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-				cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-				cout << setw(119) <<"||=====||=============================================||" << endl;       
-		        cout << setw(119) <<"||  1  || Chieu xuoi                                  ||" << endl;
-		        cout << setw(119) <<"||  2  || Chieu nguoc                                 ||" << endl;
-		        cout << setw(119) <<"||  0  || Quay lai                                    ||" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-		        cout << setw(119) <<"Chon chuc nang : "; 
+                cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+				cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+				cout << setw(85) <<"||=====||=============================================||" << endl;       
+		        cout << setw(85) <<"||  1  || Chieu xuoi                                  ||" << endl;
+		        cout << setw(85) <<"||  2  || Chieu nguoc                                 ||" << endl;
+		        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+		        cout << setw(85) <<"Chon chuc nang : "; 
+				cin >> choose;
+                switch (choose){
+                case 1:
+                    for(int i=0; i<dsNhanVien.size() -1; i++){
+                        for(int j = dsNhanVien.size() - 1; j>i; j--){
+                            char* str1 = new char[dsNhanVien.at(i)->getMaNV().length()];
+                            strcpy(str1, dsNhanVien.at(i)->getTen().c_str());
+                            char* str2 = new char[dsNhanVien.at(j)->getMaNV().length()];
+                            strcpy(str2, dsNhanVien.at(j)->getTen().c_str());
+                            if(strcmp(str1, str2) > 0){
+                                NhanVien *tmp;
+                                tmp = dsNhanVien.at(i);
+                                dsNhanVien.at(i) = dsNhanVien.at(j);
+                                dsNhanVien.at(j) = tmp;
+                            }
+                        }
+                    }
+                    XuatDS();
+                    system("pause");
+                    break;
+                case 2:
+                    for(int i=0; i<dsNhanVien.size() -1; i++){
+                        for(int j = dsNhanVien.size() - 1; j>i; j--){
+                            char* str1 = new char[dsNhanVien.at(i)->getMaNV().length()];
+                            strcpy(str1, dsNhanVien.at(i)->getTen().c_str());
+                            char* str2 = new char[dsNhanVien.at(j)->getMaNV().length()];
+                            strcpy(str2, dsNhanVien.at(j)->getTen().c_str());
+                            if(strcmp(str1, str2) < 0){
+                                NhanVien *tmp;
+                                tmp = dsNhanVien.at(i);
+                                dsNhanVien.at(i) = dsNhanVien.at(j);
+                                dsNhanVien.at(j) = tmp;
+                            }
+                        }
+                    }
+                    XuatDS();
+                    system("pause");
+                    break;
+                default:
+                    break;
+                }
+            }while(choose != 0);
+            break;
+                    
+        case 2:
+            do{
+                system("cls");
+                cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+				cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+				cout << setw(85) <<"||=====||=============================================||" << endl;       
+		        cout << setw(85) <<"||  1  || Chieu xuoi                                  ||" << endl;
+		        cout << setw(85) <<"||  2  || Chieu nguoc                                 ||" << endl;
+		        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+		        cout << setw(85) <<"Chon chuc nang : "; 
 				cin >> choose;
                 switch (choose){
                 case 1:
@@ -328,18 +426,18 @@ void QuanLyNhanVien::SapXep(){
                 }
             }while(choose != 0);
             break;
-        case 2:
+        case 3:
             do{
                 system("cls");
-                cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-				cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-				cout << setw(119) <<"||=====||=============================================||" << endl;       
-		        cout << setw(119) <<"||  1  || Chieu xuoi                                  ||" << endl;
-		        cout << setw(119) <<"||  2  || Chieu nguoc                                 ||" << endl;
-		        cout << setw(119) <<"||  0  || Quay lai                                    ||" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-		        cout << setw(119) <<"Chon chuc nang : "; 
+                cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+				cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+				cout << setw(85) <<"||=====||=============================================||" << endl;       
+		        cout << setw(85) <<"||  1  || Chieu xuoi                                  ||" << endl;
+		        cout << setw(85) <<"||  2  || Chieu nguoc                                 ||" << endl;
+		        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+		        cout << setw(85) <<"Chon chuc nang : "; 
 				cin >> choose;
                 switch (choose){
                 case 1:
@@ -375,18 +473,18 @@ void QuanLyNhanVien::SapXep(){
                 }
             }while(choose != 0);
             break;
-        case 3:
+        case 4:
             do{
                 system("cls");
-                cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-				cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-				cout << setw(119) <<"||=====||=============================================||" << endl;       
-		        cout << setw(119) <<"||  1  || Chieu xuoi                                  ||" << endl;
-		        cout << setw(119) <<"||  2  || Chieu nguoc                                 ||" << endl;
-		        cout << setw(119) <<"||  0  || Quay lai                                    ||" << endl;
-		        cout << setw(119) <<"========================================================" << endl;
-		        cout << setw(119) <<"Chon chuc nang : "; 
+                cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+				cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+				cout << setw(85) <<"||=====||=============================================||" << endl;       
+		        cout << setw(85) <<"||  1  || Chieu xuoi                                  ||" << endl;
+		        cout << setw(85) <<"||  2  || Chieu nguoc                                 ||" << endl;
+		        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+		        cout << setw(85) <<"========================================================" << endl;
+		        cout << setw(85) <<"Chon chuc nang : "; 
 				cin >> choose;
                 switch (choose){
                 case 1:
@@ -449,16 +547,17 @@ void QuanLyNhanVien::TimKiem_NV(){
     string tukhoa;
     do{
         system("cls");
-        cout << setw(119) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-		cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(119) <<"||=====||=============================================||" << endl;       
-        cout << setw(119) <<"||  1  || Theo ma nhan vien                           ||" << endl;
-        cout << setw(119) <<"||  2  || Theo ten nhan vien                          ||" << endl;
-        cout << setw(119) <<"||  3  || Theo nam vao lam                            ||" << endl;
-        cout << setw(119) <<"||  0  || Quay lai                                    ||" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-        cout << setw(119) <<"Chon chuc nang : "; 
+        cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+		cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+		cout << setw(85) <<"||=====||=============================================||" << endl;       
+        cout << setw(85) <<"||  1  || Theo ma nhan vien                           ||" << endl;
+        cout << setw(85) <<"||  2  || Theo ten nhan vien                          ||" << endl;
+        cout << setw(85) <<"||  3  || Theo nam vao lam                            ||" << endl;
+        cout << setw(85) <<"||  4  || Theo que quan                               ||" << endl;
+        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+        cout << setw(85) <<"Chon chuc nang : "; 
 		cin >> key;
         switch (key){
         case 1:
@@ -476,7 +575,7 @@ void QuanLyNhanVien::TimKiem_NV(){
                 }
             }
             if(dem == 0) 
-                cout << "\nKhong co nhan vien nay trong danh sach!";
+                cout << "\nKhong co nhan vien nay trong danh sach!" << endl;
             system("pause");
             break;
         case 2:
@@ -494,7 +593,7 @@ void QuanLyNhanVien::TimKiem_NV(){
                 }
             }
             if(dem == 0) 
-                cout << "\nKhong co nhan vien nay trong danh sach!";
+                cout << "\nKhong co nhan vien nay trong danh sach!" << endl;
             system("pause");
             break;
         case 3:
@@ -507,7 +606,25 @@ void QuanLyNhanVien::TimKiem_NV(){
                 }
             }
             if(dem == 0) 
-                cout << "\nKhong co nhan vien nay trong danh sach!";
+                cout << "\nKhong co nhan vien nay trong danh sach!" << endl;
+            system("pause");
+            break;
+        case 4:
+            cout << "\nNhap que quan nhan vien muon tim: ";
+            cin.ignore();
+            getline(cin, tukhoa);
+            for(int i=0; i<dsNhanVien.size(); i++){
+                char* str1 = new char[tukhoa.length()];
+                strcpy(str1, tukhoa.c_str());
+                char* str2 = new char[dsNhanVien.at(i)->getQueQuan().length()];
+                strcpy(str2, dsNhanVien.at(i)->getQueQuan().c_str());
+                if(strcmp(str1, str2) == 0){
+                    dsNhanVien.at(i)->Xuat();
+                    dem++;
+                }
+            }
+            if(dem == 0) 
+                cout << "\nKhong co nhan vien nay trong danh sach!" << endl;
             system("pause");
             break;
         default:
@@ -524,24 +641,98 @@ void QuanLyNhanVien::TongLuong(){
     }
     cout<<endl<<"Tong tien khach san tra luong cho nhan vien: "<<tong<< " VND" << endl;
 }
+
+void QuanLyNhanVien::Xoa(){
+	int key, nam;
+	string tukhoa;
+	do{
+        system("cls");
+        cout << setw(85) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+		cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+		cout << setw(85) <<"||=====||=============================================||" << endl;       
+        cout << setw(85) <<"||  1  || Theo ma nhan vien                           ||" << endl;
+        cout << setw(85) <<"||  2  || Theo ten nhan vien                          ||" << endl;
+        cout << setw(85) <<"||  3  || Theo nam vao lam                            ||" << endl;
+        cout << setw(85) <<"||  4  || Theo que quan                               ||" << endl;
+        cout << setw(85) <<"||  5  || Xoa toan bo nhan vien                       ||" << endl;
+        cout << setw(85) <<"||  0  || Quay lai                                    ||" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+        cout << setw(85) <<"Chon chuc nang : "; 
+		cin >> key;
+        switch (key){
+        	case 1:
+        		cout << "Nhap ma nhan vien muon xoa: ";
+				cin.ignore();
+				getline(cin, tukhoa);
+				for(int i=0;i<dsNhanVien.size();i++){
+					if(dsNhanVien[i]->getMaNV()==tukhoa){
+						dsNhanVien.erase(dsNhanVien.begin()+(i-1));
+					}
+				}
+				system("pause");
+            	break;
+			case 2:
+				cout << "Nhap ten nhan vien muon xoa: ";
+				cin.ignore();
+				getline(cin, tukhoa);
+				for(int i=0;i<dsNhanVien.size();i++){
+					if(dsNhanVien[i]->getTen()==tukhoa){
+						dsNhanVien.erase(dsNhanVien.begin()+(i-1));
+					}
+				}
+				system("pause");
+            	break;
+			case 3:
+				cout << "Nhap nam vao lam cua nhan vien muon xoa: ";
+				cin >> nam;
+				for(int i=0;i<dsNhanVien.size();i++){
+					if(dsNhanVien[i]->getNamVaoLam()==nam){
+						dsNhanVien.erase(dsNhanVien.begin()+(i-1));
+					}
+				}
+				system("pause");
+            	break;
+			case 4:
+				cout << "Nhap que quan nhan vien muon xoa: ";
+				cin.ignore();
+				getline(cin, tukhoa);
+				for(int i=0;i<dsNhanVien.size();i++){
+					if(dsNhanVien[i]->getQueQuan()==tukhoa){
+						dsNhanVien.erase(dsNhanVien.begin()+(i-1));
+					}
+				}
+				system("pause");
+            	break;
+			case 5:
+				dsNhanVien.clear();
+				system("pause");
+            	break;
+            default:
+            	break;
+		} 
+	}while (key != 0);
+}
+
 int Menu(){
 	int k;
     QuanLyNhanVien qlnv;
 	do{
         system("cls");
-        cout << setw(119) <<"* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-		cout << setw(119) <<"|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(119) <<"||=====||=============================================||" << endl;        
-        cout << setw(119) <<"||  1  || Nhap nhan vien                              ||" << endl;
-        cout << setw(119) <<"||  2  || Xuat nhan vien                              ||" << endl;
-        cout << setw(119) <<"||  3  || Sap xep luong nhan vien                     ||" << endl;
-        cout << setw(119) <<"||  4  || Nhan vien co luong cao nhat                 ||" << endl;
-        cout << setw(119) <<"||  5  || Tim kiem nhan vien                          ||" << endl;
-        cout << setw(119) <<"||  6  || Tong luong khach san phai tra cho nhan vien ||" << endl;
-        cout << setw(119) <<"||  0  || Thoat chuong trinh                          ||" << endl;
-        cout << setw(119) <<"========================================================" << endl;
-        cout << setw(119) <<"Chon chuc nang: ";
+        cout << setw(85) <<"* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+		cout << setw(85) <<"|| STT ||                  CHUC NANG                  ||" << endl;
+		cout << setw(85) <<"||=====||=============================================||" << endl;        
+        cout << setw(85) <<"||  1  || Nhap nhan vien                              ||" << endl;
+        cout << setw(85) <<"||  2  || Xuat nhan vien                              ||" << endl;
+        cout << setw(85) <<"||  3  || Sap xep luong nhan vien                     ||" << endl;
+        cout << setw(85) <<"||  4  || Nhan vien co luong cao nhat                 ||" << endl;
+        cout << setw(85) <<"||  5  || Tim kiem nhan vien                          ||" << endl;
+        cout << setw(85) <<"||  6  || Tong luong khach san phai tra cho nhan vien ||" << endl;
+        cout << setw(85) <<"||  7  || Xoa nhan vien                               ||" << endl;
+        cout << setw(85) <<"||  0  || Thoat chuong trinh                          ||" << endl;
+        cout << setw(85) <<"========================================================" << endl;
+        cout << setw(85) <<"Chon chuc nang: ";
         cin >> k;
         switch(k){
             case 1:
@@ -567,6 +758,10 @@ int Menu(){
                 qlnv.TongLuong();
                 system("pause");
                 break;
+            case 7:
+            	qlnv.Xoa();
+            	system("pause");
+            	break;
     		default:
 				break;
         }
@@ -574,5 +769,9 @@ int Menu(){
 }
 
 int main(){
+	SetWindowSize(600,150);
+	SetScreenBufferSize(600,150);
+	ShowScrollbar(0);
+	SetConsoleTitle("QUAN LY NHAN VIEN KHACH SAN");
 	Menu();
 }
