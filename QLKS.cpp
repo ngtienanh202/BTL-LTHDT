@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <windows.h>
 #include <conio.h>
@@ -366,7 +367,7 @@ void QuanLyNhanVien::CapNhat() {
                 strcpy(str2, dsNhanVien.at(i)->getMaNV().c_str());
                 if(strcmp(str1, str2) == 0){
                     dsNhanVien.at(i)->CapNhat();
-                    cout << "\nCap nhat thong tin thanh cong!";
+                    cout << "\nCap nhat thong tin thanh cong!" << endl;
                     dem++;
                 }
             }
@@ -385,7 +386,7 @@ void QuanLyNhanVien::CapNhat() {
         	strcpy(str2, dsNhanVien.at(i)->getTen().c_str());
         	if(strcmp(str1, str2) == 0) {
             	dsNhanVien.at(i)->CapNhat();
-            	cout << "\nCap nhat thong tin thanh cong!";
+            	cout << "\nCap nhat thong tin thanh cong!" << endl;
             	dem++;
         		}			
     		}
@@ -894,8 +895,8 @@ int Menu(){
 }
 
 int main(){
-	SetWindowSize(600,150);
-	SetScreenBufferSize(600,150);
+	SetWindowSize(1000,250);
+	SetScreenBufferSize(1000,250);
 	ShowScrollbar(0);
 	SetConsoleTitle("QUAN LY NHAN VIEN KHACH SAN");
 	Menu();
