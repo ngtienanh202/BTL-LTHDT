@@ -285,8 +285,8 @@ void QuanLyNhanVien::NhapDS(){
         cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         cout << "\n\n\n";
         cout << setw(125) << "========================================================" << endl;
-		cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(125) << "||=====||=============================================||" << endl;       
+	cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+	cout << setw(125) << "||=====||=============================================||" << endl;       
         cout << setw(125) << "||  1  || Le tan                                      ||" << endl;
         cout << setw(125) << "||  2  || Bao ve                                      ||" << endl;
         cout << setw(125) << "||  3  || Phuc vu                                     ||" << endl;
@@ -347,8 +347,8 @@ void QuanLyNhanVien::CapNhat() {
         cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         cout << "\n\n\n";
         cout << setw(125) << "========================================================" << endl;
-		cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(125) << "||=====||=============================================||" << endl;       
+	cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+	cout << setw(125) << "||=====||=============================================||" << endl;       
         cout << setw(125) << "||  1  || Theo ma nhan vien                           ||" << endl;
         cout << setw(125) << "||  2  || Theo ten nhan vien                          ||" << endl;
         cout << setw(125) << "||  0  || Quay lai                                    ||" << endl;
@@ -408,8 +408,8 @@ void QuanLyNhanVien::Xoa(){
         cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         cout << "\n\n\n";
         cout << setw(125) << "========================================================" << endl;
-		cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(125) << "||=====||=============================================||" << endl;       
+	cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+	cout << setw(125) << "||=====||=============================================||" << endl;       
         cout << setw(125) << "||  1  || Theo ma nhan vien                           ||" << endl;
         cout << setw(125) << "||  2  || Theo ten nhan vien                          ||" << endl;
         cout << setw(125) << "||  3  || Theo nam vao lam                            ||" << endl;
@@ -505,8 +505,8 @@ void QuanLyNhanVien::SapXep(){
         		cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         		cout << "\n\n\n";
 		        cout << setw(125) << "========================================================" << endl;
-				cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-				cout << setw(125) << "||=====||=============================================||" << endl;       
+			cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+			cout << setw(125) << "||=====||=============================================||" << endl;       
 		        cout << setw(125) << "||  1  || Chieu xuoi                                  ||" << endl;
 		        cout << setw(125) << "||  2  || Chieu nguoc                                 ||" << endl;
 		        cout << setw(125) << "||  0  || Quay lai                                    ||" << endl;
@@ -669,8 +669,8 @@ void QuanLyNhanVien::SapXep(){
         		cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         		cout << "\n\n\n";
 		        cout << setw(125) << "========================================================" << endl;
-				cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-				cout << setw(125) << "||=====||=============================================||" << endl;       
+			cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+			cout << setw(125) << "||=====||=============================================||" << endl;       
 		        cout << setw(125) << "||  1  || Chieu xuoi                                  ||" << endl;
 		        cout << setw(125) << "||  2  || Chieu nguoc                                 ||" << endl;
 		        cout << setw(125) << "||  0  || Quay lai                                    ||" << endl;
@@ -738,8 +738,8 @@ void QuanLyNhanVien::TimKiem_NV(){
         cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         cout << "\n\n\n";
         cout << setw(125) << "========================================================" << endl;
-		cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(125) << "||=====||=============================================||" << endl;       
+	cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+	cout << setw(125) << "||=====||=============================================||" << endl;       
         cout << setw(125) << "||  1  || Theo ma nhan vien                           ||" << endl;
         cout << setw(125) << "||  2  || Theo ten nhan vien                          ||" << endl;
         cout << setw(125) << "||  3  || Theo nam vao lam                            ||" << endl;
@@ -842,8 +842,8 @@ int Menu(){
         cout << setw(125) << "* * * * * * * QUAN LY NHAN VIEN KHACH SAN * * * * * * *" << endl;
         cout << "\n\n\n";
         cout << setw(125) << "========================================================" << endl;
-		cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
-		cout << setw(125) << "||=====||=============================================||" << endl;        
+	cout << setw(125) << "|| STT ||                  CHUC NANG                  ||" << endl;
+	cout << setw(125) << "||=====||=============================================||" << endl;        
         cout << setw(125) << "||  1  || Nhap nhan vien                              ||" << endl;
         cout << setw(125) << "||  2  || Xuat nhan vien                              ||" << endl;
         cout << setw(125) << "||  3  || Cap nhat thong tin nhan vien                ||" << endl;
